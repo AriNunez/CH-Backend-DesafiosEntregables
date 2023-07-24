@@ -9,11 +9,32 @@ class ProductManager {
     try {
       const products = await this.getProducts();
       let id;
+      let exists;
 
-      !products.length ? (id = 1) : (id = products[products.length - 1].id + 1);
+      if (
+        !object.title ||
+        !object.description ||
+        !object.price ||
+        !object.thumbnail ||
+        !object.code ||
+        !object.stock
+      ) {
+        return "ERROR! Uno de los campos se encuentra vacio";
+      } else {
+        exists = products.some((element) => {
+          return element.code === object.code;
+        });
+      }
 
-      products.push({ ...object, id });
-      await fs.promises.writeFile(this.path, JSON.stringify(products));
+      if (exists) {
+        return "ERROR! El campo code ya existe en la lista de productos";
+      } else {
+        !products.length
+          ? (id = 1)
+          : (id = products[products.length - 1].id + 1);
+        products.push({ ...object, id });
+        await fs.promises.writeFile(this.path, JSON.stringify(products));
+      }
     } catch (error) {
       return error;
     }
@@ -93,6 +114,14 @@ const product2 = {
   code: "efg456",
   stock: 256,
 };
+const productoIncompleto = {
+  title: "producto prueba incompleto",
+  description: "Este es un producto prueba",
+  price: 2000,
+  thumbnail: "",
+  code: "12345",
+  stock: 256,
+};
 
 const dataToUpdateProduct1 = {
   title: "producto prueba actualizado",
@@ -100,7 +129,7 @@ const dataToUpdateProduct1 = {
 };
 
 async function testing() {
-  const manejador = new ProductManager("Products.json");
+  const manejador = new ProductManager("./Products.json");
   let productos = await manejador.getProducts();
   let productoPorId;
 
@@ -108,8 +137,10 @@ async function testing() {
 
   await manejador.addProduct(product1);
   await manejador.addProduct(product2);
-  // productos = await manejador.getProducts();
-  // console.log(productos);
+  let mensaje = await manejador.addProduct(productoIncompleto);
+  console.log(mensaje);
+  productos = await manejador.getProducts();
+  console.log(productos);
 
   // productoPorId = await manejador.getProductById(12);
   // console.log(productoPorId);
@@ -125,12 +156,12 @@ async function testing() {
   // );
   // console.log(noEncuentraUpdate);
 
-  await manejador.deleteProduct(99);
-  productos = await manejador.getProducts();
-  console.log(productos);
-  await manejador.deleteProduct(3);
-  productos = await manejador.getProducts();
-  console.log(productos);
+  //   await manejador.deleteProduct(99);
+  //   productos = await manejador.getProducts();
+  //   console.log(productos);
+  //   await manejador.deleteProduct(3);
+  //   productos = await manejador.getProducts();
+  //   console.log(productos);
 }
 
 testing();
