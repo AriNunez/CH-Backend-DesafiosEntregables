@@ -1,8 +1,8 @@
-const fs = require("fs");
+import fs from "fs";
 
 class ProductManager {
   constructor(path) {
-    this.path = "./DesafioEntregable2/" + path;
+    this.path = path;
   }
 
   async addProduct(object) {
@@ -97,71 +97,6 @@ class ProductManager {
   }
 }
 
-const product1 = {
-  title: "producto prueba",
-  description: "Este es un producto prueba",
-  price: 200,
-  thumbnail: "Sin imagen",
-  code: "abc123",
-  stock: 25,
-};
+const productManager = new ProductManager("Products.json");
 
-const product2 = {
-  title: "producto prueba 2",
-  description: "Este es un producto prueba",
-  price: 2000,
-  thumbnail: "Sin imagen",
-  code: "efg456",
-  stock: 256,
-};
-const productoIncompleto = {
-  title: "producto prueba incompleto",
-  description: "Este es un producto prueba",
-  price: 2000,
-  thumbnail: "",
-  code: "12345",
-  stock: 256,
-};
-
-const dataToUpdateProduct1 = {
-  title: "producto prueba actualizado",
-  stock: 45,
-};
-
-async function testing() {
-  const manejador = new ProductManager("./Products.json");
-  let productos = await manejador.getProducts();
-  let productoPorId;
-
-  console.log(productos);
-
-  await manejador.addProduct(product1);
-  await manejador.addProduct(product2);
-  let mensaje = await manejador.addProduct(productoIncompleto);
-  console.log(mensaje);
-  productos = await manejador.getProducts();
-  console.log(productos);
-
-  // productoPorId = await manejador.getProductById(12);
-  // console.log(productoPorId);
-  // productoPorId = await manejador.getProductById(1);
-  // console.log(productoPorId);
-
-  // await manejador.updateProduct(1, dataToUpdateProduct1);
-  // productos = await manejador.getProducts();
-  // console.log(productos);
-  // let noEncuentraUpdate = await manejador.updateProduct(
-  //   22,
-  //   dataToUpdateProduct1
-  // );
-  // console.log(noEncuentraUpdate);
-
-  //   await manejador.deleteProduct(99);
-  //   productos = await manejador.getProducts();
-  //   console.log(productos);
-  //   await manejador.deleteProduct(3);
-  //   productos = await manejador.getProducts();
-  //   console.log(productos);
-}
-
-testing();
+export default productManager;
