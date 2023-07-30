@@ -97,6 +97,23 @@ class ProductManager {
   }
 }
 
-const productManager = new ProductManager("Products.json");
+const productManager = new ProductManager("./Products.json");
+
+// async function testing(){
+//   let mensaje = await productManager.addProduct(  {
+//     "title": "producto prueba",
+//     "description": "Este es un producto prueba 9",
+//     "price": 2009,
+//     "thumbnail": "Sin imagen",
+//     "code": "code9",
+//     "stock": 9,
+//     "id": 10
+//   })
+
+//   console.log(mensaje);
+
+// }
+
+// testing()
 
 export default productManager;
